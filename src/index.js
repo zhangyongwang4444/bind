@@ -15,13 +15,16 @@ function bind(asThis) {
 function _bind(asThis, ...args) {
     // this 就是函数
     const fn = this
-    return function resultFn(...args2) {
-        // this // 
+    function resultFn(...args2) {
+        // this // new 生成的
+        // this.__proto__ = resultFn.prototype
         // this.p1 = 'x'
         // this.p2 = 'y'
         // return this // 没了
         return fn.call(this.__proto__ === resultFn.prototype ? this : asThis, ...args, ...args2)
     }
+    resultFn.prototype = fn.prototype
+    return resultFn
 }
 
 module.exports = _bind
