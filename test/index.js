@@ -1,5 +1,11 @@
 const bind = require("../src/index")
 
+test1("fn.bind 能用")
+test2("this 绑定能用")
+test3("this,p1,p2 绑定成功")
+test4("this,p1绑定成功，后传p2调用成功")
+test5("new 的时候 绑定了p1 p2")
+
 function test1(message) {
     Function.prototype.bind2 = bind
     console.assert(Function.prototype.bind2 !== undefined)
@@ -34,7 +40,18 @@ function test4(message) {
     console.log(message)
 }
 
-test1("fn.bind 能用")
-test2("this 绑定能用")
-test3("this,p1,p2 绑定成功")
-test4("this,p1绑定成功，后传p2调用成功")
+function test5(message) {
+    Function.prototype.bind2 = bind
+    const fn = function (p1, p2) {
+        this.p1 = p1
+        this.p2 = p2
+    }
+    const fn2 = fn.bind2(undefined, "x", "y")
+    const object = new fn2()
+    console.log(object)
+    console.assert(object.p1 === "x", "x")
+    console.assert(object.p2 === "y", "y")
+    console.log(message)
+}
+
+
